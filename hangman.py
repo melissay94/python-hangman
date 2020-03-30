@@ -36,21 +36,21 @@ def reset_game_state():
 
   hangman_coordinates = [(2, 4), (3, 4), (3, 3), (3, 5), (4, 3), (4, 5)]
 
-def stringify_hangman_stand():
+def get_hangman_stand():
+  global hangman_stand
   row_arr = []
   for line in hangman_stand:
     row_arr.append(("".join(line)))
   
   return row_arr;
 
-def show_game_state():
-  global hangman_stand
-  global letter_graveyard
+def get_user_progress():
   global hidden_word_array
+  return "".join(hidden_word_array)
 
-  print("Your word: " + "".join(hidden_word_array))
-  stringify_hangman_stand()
-  print("Letter graveyard: " + ", ".join(letter_graveyard))
+def get_letter_graveyard():
+  global letter_graveyard
+  return ", ".join(letter_graveyard)
 
 
 def find_occurances(word, letter):
@@ -68,12 +68,11 @@ def correct_guess(user_guess):
     for index in guess_indices:
       hidden_word_array[index] = user_guess
 
-def incorrect_guess(user_guess):
+def incorrect_guess():
   global hangman_stand
   global hangman_parts
   global hangman_coordinates
 
-  print("That letter doesn't exist")
   hangman_stand[hangman_coordinates[0][0]][hangman_coordinates[0][1]] = hangman_parts[0]
   hangman_coordinates.pop(0)
   hangman_parts.pop(0)
@@ -84,49 +83,32 @@ def end_round():
   global hangman_stand
 
   if "".join(hidden_word_array) == current_secret_word:
-    print("Good job!")
-    print("You guessed the word! " + "".join(hidden_word_array))
+    return True
   else:
-    for line in hangman_stand:
-      print("".join(line))
+    return False
 
-    print("Oops... maybe next time")
-
-# Set up loop
-def game_loop():
-  while(len(hangman_parts) > 0  and "".join(hidden_word_array) != current_secret_word):
+def update_game(guess):
   
-    show_game_state()
+  if len(guess) > 1:
+    return "You can only guess one letter at a time"
+  
+  if guess.isalpha() == False:
+    return "You can only guess letters"
+  
+  if guess in letter_graveyard:
+    return "You have already guessed that letter"
 
-    # Get user input
-    user_guess = input("Guess a letter: ").lower()  
+  letter_graveyard.append(guess)
 
-    # See if user input is one letter AND within the word
-    if len(user_guess) > 1:
-      print("You can only guess one letter at a time")
-      continue
+  if guess in current_secret_word:
+    correct_guess(guess)
 
-    if user_guess in letter_graveyard or user_guess in hidden_word_array:
-      print("You've already guessed that letter")
-      continue
-    
-    letter_graveyard.append(user_guess)
+  else: 
+    incorrect_guess()
 
-    if user_guess in current_secret_word:
-      correct_guess(user_guess)
-
-    else:
-      # Letter is incorrect, draw a nother stick part
-      incorrect_guess(user_guess)
-
-  end_round()
-
-def restart_game():
-  reset_game_state()
-  game_loop()
-  user_answer = input("Do you want to go again? (yes/no)")
-
-  if user_answer.lower() != "yes":
-    print("See you next time!")
-    play_game = False
+  if len(hangman_parts) <= 0 or "".join(hidden_word_array) == current_secret_word:
+    if end_round() == True:
+      return "You Won!"
+    else: 
+      return "Better Luck Next Time"
 

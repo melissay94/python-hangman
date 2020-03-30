@@ -6,8 +6,18 @@
   <title>Hangman</title>
 </head>
 <body>
+    <h6>Current Word: {{user_progress}}</h6>
     {%for i in range(0, len)%}
       <pre>{{stand[i]}}</pre>
     {%endfor%}
+    <h6>Letter Graveyard: {{letter_graveyard}}</h6>
+    <form method="POST" action="{{ url_for('home') }}">
+      <label for="guess">Enter a Guess:</label>
+      <input name="guess" placeholder="Guess" />
+      <button type="submit">Try it!</button>
+    </form>
+    <form method="GET" action="{{ url_for('home') }}">
+      <button type="submit">Restart the game</button>
+    </form>
 </body>
 </html>
