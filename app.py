@@ -7,17 +7,21 @@ app = Flask(__name__)
 def home():
   if request.method == "GET":
     reset_game_state()
+    message = ""
+    gameEnded = False
   
   else:
     user_guess = request.form["guess"]
-    update_game(user_guess.lower())
+    message, gameEnded = update_game(user_guess.lower())
   
   hangman_stand = get_hangman_stand()
   return render_template("index.html", 
     stand=hangman_stand, 
     len=len(hangman_stand), 
     letter_graveyard=get_letter_graveyard(),
-    user_progress=get_user_progress()
+    user_progress=get_user_progress(),
+    message=message,
+    gameEnded=gameEnded
   )
     
 

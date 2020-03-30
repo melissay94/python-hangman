@@ -90,13 +90,13 @@ def end_round():
 def update_game(guess):
   
   if len(guess) > 1:
-    return "You can only guess one letter at a time"
+    return "You can only guess one letter at a time", False
   
   if guess.isalpha() == False:
-    return "You can only guess letters"
+    return "You can only guess letters", False
   
   if guess in letter_graveyard:
-    return "You have already guessed that letter"
+    return "You have already guessed that letter", False
 
   letter_graveyard.append(guess)
 
@@ -108,7 +108,9 @@ def update_game(guess):
 
   if len(hangman_parts) <= 0 or "".join(hidden_word_array) == current_secret_word:
     if end_round() == True:
-      return "You Won!"
+      return "You Won!", True
     else: 
-      return "Better Luck Next Time"
+      return "Better Luck Next Time", True
+  else:
+    return "", False
 
