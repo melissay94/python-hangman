@@ -1,0 +1,18 @@
+body {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  border: 5px solid burlywood;
+  border-radius: 10px;
+  margin: 2em;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  background-color: burlywood;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 10px;
+  font-weight: bold;
+}

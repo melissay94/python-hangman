@@ -4,18 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hangman</title>
+  <link type="text/css" rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-    <h6>Current Word: {{user_progress}}</h6>
+    <h4>Current Word: {{user_progress}}</h4>
     {%for i in range(0, len)%}
       <pre>{{stand[i]}}</pre>
     {%endfor%}
-    <h6>Letter Graveyard: {{letter_graveyard}}</h6>
+    <h4>Letter Graveyard: {{letter_graveyard}}</h4>
     <h6>{{ message }}</h6>
     {% if not gameEnded %}
     <form method="POST" action="{{ url_for('home') }}">
       <label for="guess">Enter a Guess:</label>
-      <input name="guess" placeholder="Guess" />
+      <input name="guess" placeholder="Guess" autofocus />
       <button type="submit">Try it!</button>
     </form>
     {% else %}
