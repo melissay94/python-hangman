@@ -15,7 +15,7 @@ def reset_game_state():
   global hangman_parts
   global hangman_coordinates
 
-  current_secret_word = secret_words[randint(0, len(secret_words))]
+  current_secret_word = secret_words[randint(0, len(secret_words)-1)]
 
   #Display a string of the same length as the random word but as underscores
   hidden_word_str = "_" * len(current_secret_word)
@@ -36,16 +36,20 @@ def reset_game_state():
 
   hangman_coordinates = [(2, 4), (3, 4), (3, 3), (3, 5), (4, 3), (4, 5)]
 
+def stringify_hangman_stand():
+  row_arr = []
+  for line in hangman_stand:
+    row_arr.append(("".join(line)))
+  
+  return row_arr;
+
 def show_game_state():
   global hangman_stand
   global letter_graveyard
   global hidden_word_array
 
   print("Your word: " + "".join(hidden_word_array))
-
-  for line in hangman_stand:
-    print("".join(line))
-  
+  stringify_hangman_stand()
   print("Letter graveyard: " + ", ".join(letter_graveyard))
 
 
@@ -117,9 +121,7 @@ def game_loop():
 
   end_round()
 
-play_game = True
-
-while(play_game == True):
+def restart_game():
   reset_game_state()
   game_loop()
   user_answer = input("Do you want to go again? (yes/no)")
